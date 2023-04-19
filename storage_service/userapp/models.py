@@ -7,4 +7,3 @@ class User(AbstractUser):
     phone = PhoneNumberField('Номер телефона', region='RU')
     address = models.CharField('Адрес доставки', max_length=100)
     avatar = models.FileField('Фото', null=True, blank=True)
-
