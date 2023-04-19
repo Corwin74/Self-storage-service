@@ -4,6 +4,10 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class User(AbstractUser):
+    email = models.EmailField(
+        'Электронная почта',
+        unique=True
+    )
     phone = PhoneNumberField(
         'Номер телефона',
         region='RU'
@@ -19,3 +23,5 @@ class User(AbstractUser):
         blank=True
     )
 
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
