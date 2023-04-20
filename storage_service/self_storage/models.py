@@ -1,6 +1,16 @@
+import datetime
+import uuid
+
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth import get_user_model
+
+from random import randint
+
+
+def now_plus_30():
+    """Прибавляет к текущей дате 30 дней."""
+    return datetime.datetime.now() + datetime.timedelta(days=30)
 
 
 class Warehouse(models.Model):
@@ -83,6 +93,11 @@ class Box(models.Model):
         default=False
     )
 
+    cost = models.PositiveSmallIntegerField(
+        'Стоимость',
+        default=randint(1000, 5000)
+    )
+
     customer = models.ForeignKey(
         get_user_model(),
         verbose_name='Кем занят',
@@ -126,7 +141,24 @@ class Order(models.Model):
 
     price = models.IntegerField(
         'Стоимость заказа',
+        default=0,
         db_index=True,
+    )
+
+    payment_id = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+        unique=True,
+        db_index=True,
+        verbose_name='Идентификатор платежа'
+    )
+
+    stripe_payment_id = models.CharField(
+        max_length=100,
+        blank=True,
+        default='',
+        editable=False,
+        verbose_name='Идентификатор платежа stripe'
     )
 
     paid = models.BooleanField(
@@ -137,7 +169,7 @@ class Order(models.Model):
 
     end_date = models.DateField(
         'Дата окончания хранения',
-        default=timezone.now,
+        default=now_plus_30,
         db_index=True
     )
 
