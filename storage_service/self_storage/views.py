@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from random import randint, choice
 
@@ -11,8 +11,17 @@ def index(request):
 
 @login_required(login_url='/')
 def my_rent(request):
-    context = {}
+    if request.GET:
+        request.user.email = request.GET.get('EMAIL_EDIT')
+        request.user.phone = request.GET.get('PHONE_EDIT')
+        # request.user.set_password(request.GET.get('PASSWORD_EDIT'))
+        # TODO if change password add redirect to login page, when create it
+        request.user.save()
+        return redirect('my_rent')
+    orders = request.user.orders.all()  # TODO optimize query
+    context = {"orders": orders}
     return render(request, template_name='my-rent.html', context=context)
+
 
 # @login_required(login_url='/')
 def boxes(request):
@@ -67,3 +76,7 @@ def boxes(request):
     }
 
     return render(request, template_name='boxes.html', context=context)
+
+
+def faq(request):
+    return render(request, template_name='faq.html')
