@@ -11,7 +11,8 @@ def index(request):
 
 @login_required(login_url='/')
 def my_rent(request):
-    context = {}
+    orders = request.user.orders.all()
+    context = {"orders": orders}
     return render(request, template_name='my-rent.html', context=context)
 
 # @login_required(login_url='/')
@@ -67,3 +68,7 @@ def boxes(request):
     }
 
     return render(request, template_name='boxes.html', context=context)
+
+
+def faq(request):
+    return render(request, template_name='faq.html')
