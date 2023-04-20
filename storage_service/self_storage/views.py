@@ -15,10 +15,9 @@ def my_rent(request):
     if request.GET:
         request.user.email = request.GET.get('EMAIL_EDIT')
         request.user.phone = request.GET.get('PHONE_EDIT')
-        # request.user.set_password(request.GET.get('PASSWORD_EDIT'))
-        # TODO if change password add redirect to login page, when create it
+        request.user.set_password(request.GET.get('PASSWORD_EDIT'))
         request.user.save()
-        return redirect('my_rent')
+        return redirect('login_page')
     orders = request.user.orders.all()  # TODO optimize query
     context = {"orders": orders}
     return render(request, template_name='my-rent.html', context=context)
