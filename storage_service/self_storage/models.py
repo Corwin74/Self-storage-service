@@ -147,4 +147,4 @@ class Order(models.Model):
         db_index=True)
 
     def __str__(self):
-        return f'{self.customer}, {self.warehouse}'
+        return f'{self.customer}, {self.box.warehouse}'
