@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 Django==3.2
 django-debug-toolbar==3.2.1
 django-phonenumber-field==7.0.2
 environs==9.5.0
 phonenumbers==8.13.10
+=======
+Django~=3.2.0
+django-debug-toolbar~=3.2.0
+environs==9.5.0
+django-phonenumber-field~=7.0.0
+phonenumbers~=8.13.0
+>>>>>>> e025030a2631885d8f41fa3a55d2da2a3750efcc
