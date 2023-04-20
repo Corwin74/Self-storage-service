@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout, authenticate
 from random import randint, choice
 
 from .models import Warehouse, Size, Box
@@ -9,7 +10,7 @@ def index(request):
     return render(request, template_name='index.html')
 
 
-@login_required(login_url='/')
+@login_required(login_url='login_page')
 def my_rent(request):
     if request.GET:
         request.user.email = request.GET.get('EMAIL_EDIT')
@@ -80,3 +81,19 @@ def boxes(request):
 
 def faq(request):
     return render(request, template_name='faq.html')
+
+
+def login_view(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(request, email=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('my_rent')
+    return render(request, template_name='login.html')
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('main')
