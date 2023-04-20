@@ -25,7 +25,7 @@ class Warehouse(models.Model):
         help_text='3')
 
     def __str__(self):
-        return f'{self.name} ({self.address})'
+        return self.name
 
 
 class Size(models.Model):
@@ -98,7 +98,7 @@ class Box(models.Model):
     )
 
     def __str__(self):
-        return f'{self.name}, {self.size}, {self.warehouse.name}'
+        return f'{self.warehouse.name}-{self.name}'
 
 
 class Order(models.Model):
@@ -116,12 +116,6 @@ class Order(models.Model):
         on_delete=models.CASCADE,
         db_index=True
     )
-
-    warehouse = models.ForeignKey(
-        Warehouse,
-        verbose_name='Склад',
-        related_name='orders',
-        on_delete=models.PROTECT)
 
     box = models.ForeignKey(
         Box,
@@ -153,4 +147,4 @@ class Order(models.Model):
         db_index=True)
 
     def __str__(self):
-        return f'{self.customer}, {self.warehouse}'
+        return f'{self.customer}, {self.box.warehouse}'

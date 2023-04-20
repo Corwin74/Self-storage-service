@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout, authenticate
 from random import randint, choice
 
 from .models import Warehouse, Size, Box
@@ -9,10 +10,19 @@ def index(request):
     return render(request, template_name='index.html')
 
 
-@login_required(login_url='/')
+@login_required(login_url='login_page')
 def my_rent(request):
-    context = {}
+    if request.GET:
+        request.user.email = request.GET.get('EMAIL_EDIT')
+        request.user.phone = request.GET.get('PHONE_EDIT')
+        # request.user.set_password(request.GET.get('PASSWORD_EDIT'))
+        # TODO if change password add redirect to login page, when create it
+        request.user.save()
+        return redirect('my_rent')
+    orders = request.user.orders.all()  # TODO optimize query
+    context = {"orders": orders}
     return render(request, template_name='my-rent.html', context=context)
+
 
 # @login_required(login_url='/')
 def boxes(request):
@@ -67,3 +77,23 @@ def boxes(request):
     }
 
     return render(request, template_name='boxes.html', context=context)
+
+
+def faq(request):
+    return render(request, template_name='faq.html')
+
+
+def login_view(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(request, email=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('my_rent')
+    return render(request, template_name='login.html')
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('main')
