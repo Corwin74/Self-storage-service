@@ -8,7 +8,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='main'),
     path('my-rent', views.my_rent, name='my_rent'),
-
+    path('boxes', views.boxes, name='boxes'),
 
     ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
