@@ -14,7 +14,8 @@ def my_rent(request):
     if request.GET:
         request.user.email = request.GET.get('EMAIL_EDIT')
         request.user.phone = request.GET.get('PHONE_EDIT')
-        # TODO add method to save password
+        # request.user.set_password(request.GET.get('PASSWORD_EDIT'))
+        # TODO if change password add redirect to login page, when create it
         request.user.save()
         return redirect('my_rent')
     orders = request.user.orders.all()  # TODO optimize query
