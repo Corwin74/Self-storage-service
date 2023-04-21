@@ -8,6 +8,7 @@ from django.urls import reverse
 from random import randint, choice
 
 from .models import Warehouse, Size, Box, Order
+from .forms import RegisterUser
 
 
 def index(request):
@@ -99,6 +100,21 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('main')
+
+
+def registration_view(request):
+    if request.method == 'POST':
+        form = RegisterUser(request.POST)
+        if form.is_valid():
+            form.save()
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password1']
+            user = authenticate(email=email, password=password)
+            login(request, user)
+            return redirect('my_rent')
+    else:
+        form = RegisterUser()
+    return render(request, 'registration.html', {'form': form})
 
 
 @login_required(login_url='login_page')
