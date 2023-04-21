@@ -69,7 +69,7 @@
 					<div class="row">
 						<div class="col-12 col-sm-5 d-flex flex-column align-items-center">
               {% if request.user.avatar and request.user.first_name %}
-                <img src="{{ request.user.avatar.url }}" class="rounded-pill mb-3" alt="">
+                <img src="{{ request.user.avatar.url }}" class="rounded-pill mb-3" width="200" height="200" alt="">
                 <h4>{{ request.user.first_name }} {{ request.user.last_name }}</h4>
               {% else %}
                 <h4>{{ request.user.email }}</h4>
