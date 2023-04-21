@@ -15,7 +15,7 @@
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
-		<a class="navbar-brand" href="#">
+		<a class="navbar-brand" href="{% url 'main' %}">
 			<img src="{% static 'img/Vector.svg' %}" alt="[]">
 			<img src="{% static 'img/SelfStorage.svg' %}" alt="SelfStorage">
 		</a>
@@ -278,7 +278,7 @@
 		<div class="tab-content" id="pills-tabContent">
 			<div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-home-tab">
 				{% for box in available_boxes|slice:":2" %}
-          		<a href="#" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
+          		<a href="{% url 'create_order' box_id=box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
             	  	<div>
 						<h5 class="text-center mb-4 fw-bold">{{ box.warehouse.name }}, {{ box.warehouse.address }}</h5>
 					</div>
@@ -292,14 +292,14 @@
 						<span class="fs_24">{{ box.size.name }} м²</span>
 					</div>
 					<div class="col-12 col-lg-3">
-						<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От 1000 ₽</span>
+						<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">{{ box.cost }} ₽</span>
 					</div>
 				</a>
 				{% endfor %}
 				{% if available_boxes|length > 2 %}
 				<div class="collapse" id="collapse-all">
 					{% for box in available_boxes|slice:"2:" %}
-					<a href="№" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
+					<a href="{% url 'create_order' box_id=box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 						<div>
 							<h5 class="text-center mb-4 fw-bold">{{ box.warehouse.name }}, {{ box.warehouse.address }}</h5>
 						</div>
@@ -313,7 +313,7 @@
 							<span class="fs_24">{{ box.size.name }} м²</span>
 						</div>
 						<div class="col-12 col-lg-3">
-							<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От 1000 ₽</span>
+							<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">{{ box.cost }} ₽</span>
 						</div>
 					</a>
 					{% endfor %}
@@ -330,7 +330,7 @@
 			<!-- Filters -->
 			<div class="tab-pane fade" id="pills-to3" role="tabpanel" aria-labelledby="pills-profile-tab">
 				{% for box in boxes_volume_to_3|slice:":2" %}
-				<a href="#" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
+				<a href="{% url 'create_order' box_id=box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 					<div>
 						<h5 class="text-center mb-4 fw-bold">{{ box.warehouse.name }}, {{ box.warehouse.address }}</h5>
 					</div>
@@ -344,14 +344,14 @@
 						<span class="fs_24">{{ box.size.name }} м²</span>
 					</div>
 					<div class="col-12 col-lg-3">
-						<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От 1000 ₽</span>
+						<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">{{ box.cost }} ₽</span>
 					</div>
 				</a>
 				{% endfor %}
 				{% if boxes_volume_to_3|length > 2 %}
 				<div class="collapse" id="collapse-to10">
 					{% for box in boxes_volume_to_3|slice:"2:" %}
-					<a href="#" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
+					<a href="{% url 'create_order' box_id=box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 						<div>
 							<h5 class="text-center mb-4 fw-bold">{{ box.warehouse.name }}, {{ box.warehouse.address }}</h5>
 						</div>
@@ -365,7 +365,7 @@
 							<span class="fs_24">{{ box.size.name }} м²</span>
 						</div>
 						<div class="col-12 col-lg-3">
-							<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От 1000 ₽</span>
+							<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">{{ box.cost }} ₽</span>
 						</div>
 					</a>
 					{% endfor %}
@@ -381,7 +381,7 @@
 
 			<div class="tab-pane fade" id="pills-to10" role="tabpanel" aria-labelledby="pills-contact-tab">
 				{% for box in boxes_volume_to_10|slice:":2" %}
-				<a href="#" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
+				<a href="{% url 'create_order' box_id=box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 					<div>
 						<h5 class="text-center mb-4 fw-bold">{{ box.warehouse.name }}, {{ box.warehouse.address }}</h5>
 					</div>
@@ -395,14 +395,14 @@
 						<span class="fs_24">{{ box.size.name }} м²</span>
 					</div>
 					<div class="col-12 col-lg-3">
-						<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От 1000 ₽</span>
+						<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">{{ box.cost }} ₽</span>
 					</div>
 				</a>
 				{% endfor %}
 				{% if boxes_volume_to_10|length > 2 %}
 				<div class="collapse" id="collapse-to10">
 					{% for box in boxes_volume_to_10|slice:"2:" %}
-					<a href="#" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
+					<a href="{% url 'create_order' box_id=box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 						<div>
 							<h5 class="text-center mb-4 fw-bold">{{ box.warehouse.name }}, {{ box.warehouse.address }}</h5>
 						</div>
@@ -416,7 +416,7 @@
 							<span class="fs_24">{{ box.size.name }} м²</span>
 						</div>
 						<div class="col-12 col-lg-3">
-							<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От 1000 ₽</span>
+							<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">{{ box.cost }} ₽</span>
 						</div>
 					</a>
 					{% endfor %}
@@ -432,7 +432,7 @@
 
 			<div class="tab-pane fade" id="pills-from10" role="tabpanel" aria-labelledby="pills-contact-tab">
 				{% for box in boxes_volume_from_10|slice:":2" %}
-				<a href="#" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
+				<a href="{% url 'create_order' box_id=box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 					<div>
 						<h5 class="text-center mb-4 fw-bold">{{ box.warehouse.name }}, {{ box.warehouse.address }}</h5>
 					</div>
@@ -446,14 +446,14 @@
 						<span class="fs_24">{{ box.size.name }} м²</span>
 					</div>
 					<div class="col-12 col-lg-3">
-						<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От 1000 ₽</span>
+						<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">{{ box.cost }} ₽</span>
 					</div>
 				</a>
 				{% endfor %}
 				{% if boxes_volume_from_10|length > 2 %}
 				<div class="collapse" id="collapse-to10">
 					{% for box in boxes_volume_from_10|slice:"2:" %}
-					<a href="#" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
+					<a href="{% url 'create_order' box_id=box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 						<div>
 							<h5 class="text-center mb-4 fw-bold">{{ box.warehouse.name }}, {{ box.warehouse.address }}</h5>
 						</div>
@@ -467,7 +467,7 @@
 							<span class="fs_24">{{ box.size.name }} м²</span>
 						</div>
 						<div class="col-12 col-lg-3">
-							<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От 1000 ₽</span>
+							<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">{{ box.cost }} ₽</span>
 						</div>
 					</a>
 					{% endfor %}

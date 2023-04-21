@@ -3,3 +3,4 @@ django-debug-toolbar==3.2.1
 django-phonenumber-field==7.0.2
 environs==9.5.0
 phonenumbers==8.13.10
+stripe==3.3.0
