@@ -45,6 +45,7 @@ def boxes(request):
         index += 1
 
         warehouse_info = {
+            'id': warehouse.id,
             'index': index,
             'city': warehouse.name,
             'address': warehouse.address,
