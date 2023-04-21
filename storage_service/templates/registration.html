@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="{% static 'css/Style.css' %}">
+	<title>SelfStorage</title>
+</head>
+<body>
+	<div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
+		<div class="modal-content">
+			<div class="modal-body d-flex justify-content-center align-items-center">
+				<form method="post" class="d-flex flex-column align-items-center" style="max-width: 420px">
+          {% csrf_token %}
+          <a class="navbar-brand" href="{% url 'main' %}">
+            <img src="{% static 'img/Vector.svg' %}" alt="[]">
+            <img src="{% static 'img/SelfStorage.svg' %}" alt="SelfStorage">
+          </a>
+					<h1 class="modal-title text-center fw-bold mb-3">Регистрация</h1>
+          {% for field in form %}
+            {{ field.errors }}
+            {{ field }}
+          {% endfor %}
+          <span class="fw-light SelfStorage_grey">Нажимая на кнопку, вы подтверждаете свое <a href="{% static 'Agreement.pdf' %}" class="SelfStorage_grey">согласие на обработку персональных данных</a></span>
+					<button  type="submit" class="btn border-8 py-3 px-5 mt-5 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Зарегистрироваться</button>
+          <span>Уже зарегистрированы? <a href="{% url 'login_page' %}" class="SelfStorage_orange" data-bs-toggle="modal" data-bs-target="#SignModal" data-bs-dismiss="modal" aria-label="Close">Войти в личный кабинет</a></span>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
