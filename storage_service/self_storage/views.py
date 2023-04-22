@@ -1,6 +1,7 @@
 import stripe
+from django.core import serializers
 from django.conf import settings
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponseNotFound
@@ -81,6 +82,12 @@ def boxes(request):
     }
 
     return render(request, template_name='boxes.html', context=context)
+
+
+def fetch_boxes(request, id):
+    boxes = Warehouse.objects.get(id=id).boxes.all()
+    data = serializers.serialize("json", boxes)
+    return HttpResponse(data)
 
 
 def faq(request):
