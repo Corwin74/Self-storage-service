@@ -95,7 +95,7 @@ class Box(models.Model):
 
     cost = models.PositiveSmallIntegerField(
         'Стоимость',
-        default=randint(1000, 5000)
+        default=3000
     )
 
     customer = models.ForeignKey(
