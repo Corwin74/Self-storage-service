@@ -18,7 +18,6 @@ class User(AbstractUser):
     )
     avatar = models.FileField(
         'Фото',
-        upload_to='Media',
         null=True, 
         blank=True
     )

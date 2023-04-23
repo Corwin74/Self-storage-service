@@ -86,6 +86,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+MEDIA_URL = '/meida/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 AUTH_USER_MODEL = 'userapp.User'
 
 LANGUAGE_CODE = 'ru-RU'
