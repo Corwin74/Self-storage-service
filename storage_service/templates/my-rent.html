@@ -129,7 +129,10 @@
                 <h4>{{ order.box.name }}</h4>
                 <h4 class="SelfStorage_green">Срок аренды</h4>
                 <h4>{{ order.created_at|date:'d.m.Y' }} - {{ order.end_date|date:'d.m.Y' }}</h4>
-                <div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3">Продлить аренду</button></div>
+                <form method="POST">
+                  {% csrf_token %}
+                  <div><button name="box_id" value="{{ order.box.id }}" class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3">Продлить аренду на месяц</button></div>
+                </form>
                 <div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange mb-3">Открыть бокс</button></div>
                 <a href="{% url 'faq' %}" class="SelfStorage_orange">Нужна помощь?</a>
               </div>

@@ -1,3 +1,4 @@
+from dateutil.relativedelta import relativedelta
 import stripe
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
@@ -27,6 +28,17 @@ def my_rent(request):
             return redirect('login_page')
         request.user.save()
     orders = request.user.orders.all()  # TODO optimize query
+    if request.POST:
+        box_id = request.POST.get('box_id')
+        order = Order.objects.get(customer=request.user, box=box_id)
+        new_order_end_date = order.end_date + relativedelta(months=1)
+        order.end_date = new_order_end_date
+        order.paid = False
+        payment_url = request.build_absolute_uri(
+            reverse('make_payment', kwargs={'payment_id': order.payment_id})
+        )
+        order.save()
+        return redirect(payment_url, code=303)
     context = {"orders": orders}
     return render(request, template_name='my-rent.html', context=context)
 
