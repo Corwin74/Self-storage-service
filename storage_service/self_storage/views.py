@@ -1,15 +1,23 @@
-from dateutil.relativedelta import relativedelta
+import qrcode
 import stripe
+from dateutil.relativedelta import relativedelta
+
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponseNotFound
 from django.urls import reverse
+from django.core.files.base import File
 from random import randint, choice
 
 from .models import Warehouse, Size, Box, Order
 from .forms import RegisterUser
+
+
+def generate_qr_code(order_data, file_name):
+    qr_image = qrcode.make(order_data)
+    qr_image.save(file_name)
 
 
 def index(request):
@@ -37,7 +45,10 @@ def my_rent(request):
         payment_url = request.build_absolute_uri(
             reverse('make_payment', kwargs={'payment_id': order.payment_id})
         )
-        order.save()
+        generate_qr_code(order.end_date, f'media/qrcode_{order.id}.jpg')
+        with open(f'media/qrcode_{order.id}.jpg', 'rb') as file:
+            order.qr_code = File(file=file, name=f'qrcode_{order.id}.jpg') 
+            order.save()
         return redirect(payment_url, code=303)
     context = {"orders": orders}
     return render(request, template_name='my-rent.html', context=context)
@@ -143,6 +154,10 @@ def create_order(request, box_id: int):
     order.customer = request.user
     order.box = box
     order.save()
+    generate_qr_code(order.end_date, f'media/qrcode_{order.id}.jpg')
+    with open(f'media/qrcode_{order.id}.jpg', 'rb') as file:
+        order.qr_code = File(file=file, name=f'qrcode_{order.id}.jpg') 
+        order.save()
 
     payment_url = request.build_absolute_uri(
         reverse('make_payment', kwargs={'payment_id': order.payment_id}))
