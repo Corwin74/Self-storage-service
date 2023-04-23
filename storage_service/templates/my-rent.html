@@ -133,7 +133,9 @@
                   {% csrf_token %}
                   <div><button name="box_id" value="{{ order.box.id }}" class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3">Продлить аренду на месяц</button></div>
                 </form>
-                <div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange mb-3">Открыть бокс</button></div>
+                {% if order.qr_code %}
+                  <div><a href="{{ order.qr_code.url }}"><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange mb-3">Открыть бокс</button></a></div>
+                {% endif %}
                 <a href="{% url 'faq' %}" class="SelfStorage_orange">Нужна помощь?</a>
               </div>
             {% endfor %}

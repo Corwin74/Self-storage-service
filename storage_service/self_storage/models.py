@@ -177,6 +177,13 @@ class Order(models.Model):
         'Дата создания заказа',
         default=timezone.now,
         db_index=True)
+    
+    qr_code = models.FileField(
+        'QR-код для доступа',
+        upload_to='qr_codes',
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return f'{self.customer}, {self.box.warehouse}'

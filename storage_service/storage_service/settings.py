@@ -87,6 +87,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+MEDIA_URL = '/meida/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 AUTH_USER_MODEL = 'userapp.User'
 
 LANGUAGE_CODE = 'ru-RU'
@@ -104,6 +108,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STRIPE_API_KEY = env('STRIPE_API_KEY')
+
 
 APSCHEDULER_DATETIME_FORMAT = "d.m.Y H:M:S"
 APSCHEDULER_RUN_NOW_TIMEOUT = 25
