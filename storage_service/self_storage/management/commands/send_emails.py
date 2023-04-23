@@ -50,28 +50,6 @@ def send_emails():
             )
         except:
             continue
-        # if 0 < rent_term <= 30:
-        #     try:
-        #         template = Template(BOX_RENT_ENDS_SOON_NOTICE_TEMPLATE)
-        #         send_mail(
-        #             subject=subject,
-        #             message=template.render(context=Context({"box": box})),
-        #             from_email=settings.EMAIL_HOST_USER,
-        #             recipient_list=[box.customer.email]
-        #         )
-        #     except:
-        #         continue
-        # elif -180 <= rent_term <= 0:
-        #     try:
-        #         template = Template(BOX_RENT_ENDED_NOTICE_TEMPLATE)
-        #         send_mail(
-        #             subject=subject,
-        #             message=template.render(context=Context({"box": box})),
-        #             from_email=settings.EMAIL_HOST_USER,
-        #             recipient_list=[box.customer.email]
-        #         )
-        #     except:
-        #         continue
 
 
 @util.close_old_connections
@@ -89,8 +67,7 @@ class Command(BaseCommand):
 
         scheduler.add_job(
             send_emails,
-            # trigger=CronTrigger(day='*/1'),
-            trigger=CronTrigger(second="*/10"),
+            trigger=CronTrigger(day='*/1'),
             id="send_emails",
             max_instances=1,
             replace_existing=True
