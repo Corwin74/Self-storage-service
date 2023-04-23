@@ -160,23 +160,10 @@
 			{% endfor %}
 		</ul>
 		<script>
-			function fetchBoxes(id) {
-				$.ajax({
-					type: "get",
-					url: "/api/warehouse/"+id+'/',
-					success: function(response) {
-						let parse_response = JSON.parse(response);
-						console.log(parse_response)
-						return parse_response;
-					}
-				});
-			}
-
-			function generateBoxElement(name, size, size_name, price) {
-				
+			function generateBoxElement(name, floor, size, size_name, price) {	
 				return `<a href="#" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 					<div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-						<span class="SelfStorage_green fs_24 me-2">3 эт.</span><span class="fs_24">`+name+`</span>
+						<span class="SelfStorage_green fs_24 me-2">`+floor+`</span><span class="fs_24">`+name+`</span>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
 						<span class="fs_24">`+size+`</span>
@@ -189,13 +176,31 @@
 					</div>
 				</a>`
 			}
-			fetchBoxes(1)
+			function fetchBoxes(id) {
+				$.ajax({
+					type: "get",
+					url: "/api/warehouse/"+id+'/',
+					success: function(response) {
+						let parse_response = JSON.parse(response);
+						console.log(parse_response)
+						let boxes_all = JSON.parse(parse_response['boxes_all'])
+						if (parse_response['is_all_more_2'])
+							console.log(boxes_all[1]['fields']['name'])
+							html_block=''
+							html_block += generateBoxElement(boxes_all[1]['fields']['name'], boxes_all[1]['fields']['size'], 'Гараж', boxes_all[1]['fields']['cost'])
+							document.getElementById('all2').innerHTML = html_block
+					}
+				});
+			}
+
+
 			{% for warehouse in warehouses %}
-				document.getElementById('pills-{{  warehouse.index  }}-tab').addEventListener('click', () => {
+				document.getElementById('pills-{{  warehouse.id  }}-tab').addEventListener('click', () => {
 					document.getElementById('toBox').click()
-					document.getElementById('pills-all').getElementsByClassName('first2').item(0).innerHTML = generateBoxElement('Люкс', '10', '7500')
+					fetchBoxes('{{ warehouse.id }}')
 				})
 			{% endfor %}
+			document.getElementById('pills-{{  warehouses.0.id  }}-tab').click()
 		</script>
 	</article>
 	<article class="pt-header" id="BOX">
@@ -309,7 +314,7 @@
 
 		<div class="tab-content" id="pills-tabContent">
 			<div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-home-tab">
-					<div class="first2">
+					<div id="all2">
 						<h3>Блок All первые два</h3>
 					</div>
 				<div class="collapse" id="collapse-all">

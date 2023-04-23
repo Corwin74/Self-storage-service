@@ -1,4 +1,5 @@
 import stripe
+import json
 from django.core import serializers
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
@@ -8,7 +9,7 @@ from django.http import HttpResponseNotFound
 from django.urls import reverse
 from random import randint, choice
 
-from .models import Warehouse, Size, Box, Order
+from .models import Warehouse, Size, Box, Order, Value
 from .forms import RegisterUser
 
 
@@ -85,8 +86,32 @@ def boxes(request):
 
 
 def fetch_boxes(request, id):
-    boxes = Warehouse.objects.get(id=id).boxes.all()
-    data = serializers.serialize("json", boxes)
+    meta_response = {}
+    boxes_all = Box.objects.filter(warehouse_id=id).annotate(size_name=Value('size'))
+    if boxes_all.count() > 2:
+        meta_response['is_all_more_2'] = True
+    else:
+        meta_response['is_all_more_2'] = False
+    boxes_to_3 = boxes_all.filter(size__name__lt=3)
+    if boxes_to_3.count() > 2:
+        meta_response['is_to3_more_2'] = True
+    else:
+        meta_response['is_to_3_more_2'] = False
+    boxes_to_10 = boxes_all.filter(size__name__lt=10)
+    if boxes_to_10.count() > 2:
+        meta_response['is_to_10_more_2'] = True
+    else:
+        meta_response['is_to_10_more_2'] = False
+    boxes_from_10 = boxes_all.filter(size__name__lt=10)
+    if boxes_from_10.count() > 2:
+        meta_response['is_from_10_more_2'] = True
+    else:
+        meta_response['is_from_10_more_2'] = False
+    meta_response['boxes_all'] = serializers.serialize("json", boxes_all)
+    meta_response['boxes_to_3'] = serializers.serialize("json", boxes_to_3)
+    meta_response['boxes_to_10'] = serializers.serialize("json", boxes_to_10)
+    meta_response['boxes_from_10'] = serializers.serialize("json", boxes_from_10)
+    data = json.dumps(meta_response)
     return HttpResponse(data)
 
 
