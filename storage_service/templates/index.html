@@ -15,7 +15,7 @@
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
-		<a class="navbar-brand" href="#">
+		<a class="navbar-brand" href="{% url 'main' %}">
 			<img src="{% static 'img/Vector.svg' %}" alt="[]">
 			<img src="{% static 'img/SelfStorage.svg' %}" alt="SelfStorage">
 		</a>
@@ -25,10 +25,10 @@
 					<a class="nav-link SelfStorage_black" href="#">Рассчитать стоимость</a>
 				</li>
 				<li class="nav-item me-5">
-					<a class="nav-link SelfStorage_black" href="#">Правила хранения</a>
+					<a class="nav-link SelfStorage_black" href="{% url 'faq' %}">Правила хранения</a>
 				</li>
 				<li class="nav-item me-5">
-					<a class="nav-link SelfStorage_black" href="boxes">Арендовать бокс</a>
+					<a class="nav-link SelfStorage_black" href="{% url 'boxes' %}">Арендовать бокс</a>
 				</li>
         {% if request.user.is_anonymous %}
           <li class="nav-item me-5">
@@ -172,7 +172,9 @@
 				</div>
 
 				<h4 class="text-white mt-5 mb-3">Бокс от 190 р. за м²</h4>
-				<button class="btn fs_24 SelfStorage_green bg-white SelfStorage__btn_green border-8 w-50 py-3">Подробнее</button>
+				<a href="{% url 'boxes' %}" class="btn fs_24 SelfStorage_green bg-white SelfStorage__btn_green border-8 w-50 py-3">
+					Подробнее
+				</a>
 			</div>
 		</div>
 		<div class="col-12 col-lg-6 d-flex justify-content-center justify-content-lg-start">
@@ -186,7 +188,9 @@
 					<span class="text-white">Другие идеи хранения</span>
 				</div>
 				<h4 class="text-white mt-5 mb-3">Бокс от 210 р. за м²</h4>
-				<button class="btn fs_24 SelfStorage_orange bg-white SelfStorage__btn_orange border-8 w-50 py-3">Подробнее</button>
+				<a href="{% url 'boxes' %}" class="btn fs_24 SelfStorage_orange bg-white SelfStorage__btn_orange border-8 w-50 py-3">
+					Подробнее
+				</a>
 			</div>
 		</div>
 	</article>
