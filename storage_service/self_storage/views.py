@@ -120,7 +120,11 @@ def login_view(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect('my_rent')
+            
+            if request.GET.get('next'): 
+                return redirect(request.GET.get('next'))
+            else:
+                return redirect('my_rent')
     return render(request, template_name='login.html')
 
 
@@ -147,6 +151,7 @@ def registration_view(request):
 @login_required(login_url='login_page')
 def create_order(request, box_id: int):
     """Создание заказа на аренду."""
+    print(box_id)
     box = get_object_or_404(Box, pk=box_id)
     
     order = Order()
