@@ -8,6 +8,7 @@ from django.urls import reverse
 from random import randint, choice
 
 from .models import Warehouse, Size, Box, Order
+from .forms import RegisterUser
 
 
 def index(request):
@@ -19,9 +20,12 @@ def my_rent(request):
     if request.GET:
         request.user.email = request.GET.get('EMAIL_EDIT')
         request.user.phone = request.GET.get('PHONE_EDIT')
-        request.user.set_password(request.GET.get('PASSWORD_EDIT'))
+        request.user.address = request.GET.get('ADDRESS_EDIT')
+        if request.GET.get('PASSWORD_EDIT'):
+            request.user.set_password(request.GET.get('PASSWORD_EDIT'))
+            request.user.save()
+            return redirect('login_page')
         request.user.save()
-        return redirect('login_page')
     orders = request.user.orders.all()  # TODO optimize query
     context = {"orders": orders}
     return render(request, template_name='my-rent.html', context=context)
@@ -44,6 +48,7 @@ def boxes(request):
         index += 1
 
         warehouse_info = {
+            'id': warehouse.id,
             'index': index,
             'city': warehouse.name,
             'address': warehouse.address,
@@ -99,6 +104,21 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('main')
+
+
+def registration_view(request):
+    if request.method == 'POST':
+        form = RegisterUser(request.POST)
+        if form.is_valid():
+            form.save()
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password1']
+            user = authenticate(email=email, password=password)
+            login(request, user)
+            return redirect('my_rent')
+    else:
+        form = RegisterUser()
+    return render(request, 'registration.html', {'form': form})
 
 
 @login_required(login_url='login_page')

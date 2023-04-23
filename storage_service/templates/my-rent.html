@@ -69,7 +69,7 @@
 					<div class="row">
 						<div class="col-12 col-sm-5 d-flex flex-column align-items-center">
               {% if request.user.avatar and request.user.first_name %}
-                <img src="{{ request.user.avatar.url }}" class="rounded-pill mb-3" alt="">
+                <img src="{{ request.user.avatar.url }}" class="rounded-pill mb-3" width="200" height="200" alt="">
                 <h4>{{ request.user.first_name }} {{ request.user.last_name }}</h4>
               {% else %}
                 <h4>{{ request.user.email }}</h4>
@@ -81,8 +81,10 @@
                 <input type="email" name="EMAIL_EDIT" id="EMAIL" class="form-control fs_24 ps-2 SelfStorage__input" value="{{ request.user.email }}" disabled>
 								<label class="fs_24 SelfStorage_green ms-2" for="PHONE">Телефон</label>
                 <input type="tel" name="PHONE_EDIT" id="PHONE" class="form-control fs_24 ps-2 SelfStorage__input" value="{{ request.user.phone }}" disabled>
-								<label class="fs_24 SelfStorage_green ms-2" for="PASSWORD">Пароль</label>
-                <input type="password" name="PASSWORD_EDIT" id="PASSWORD" class="form-control fs_24 ps-2 SelfStorage__input" value="111111" disabled>
+								<label class="fs_24 SelfStorage_green ms-2 " for="ADDRESS">Адрес</label>
+                <input type="text" name="ADDRESS_EDIT" id="ADDRESS" class="form-control fs_24 ps-2 SelfStorage__input" value="{{ request.user.address }}" disabled>
+								<label class="fs_24 SelfStorage_green ms-2" for="PASSWORD">Новый пароль</label>
+                <input type="password" name="PASSWORD_EDIT" id="PASSWORD" class="form-control fs_24 ps-2 SelfStorage__input">
 								<button type="submit" class="btn SelfStorage_green ps-1" id="save" style="display: none">Сохранить</button>
 								<a class="btn SelfStorage_orange ps-1" id="edit">Редактировать</a>
 								<script>
@@ -90,8 +92,9 @@
 										e.preventDefault()
 										document.getElementById('EMAIL').disabled = false
 										document.getElementById('PHONE').disabled = false
+										document.getElementById('ADDRESS').disabled = false
 										document.getElementById('PASSWORD').disabled = false
-										document.getElementById('PASSWORD').type = 'text'
+										document.getElementById('PASSWORD').type = 'password'
 										document.getElementById('edit').style.display = 'none'
 										document.getElementById('save').style.display = 'inline-block'
 									})
@@ -99,6 +102,7 @@
 										setTimeout(() => {
 											document.getElementById('EMAIL').disabled = true
 											document.getElementById('PHONE').disabled = true
+										  document.getElementById('ADDRESS').disabled = true
 											document.getElementById('PASSWORD').disabled = true
 											document.getElementById('PASSWORD').type = 'password'
 											document.getElementById('edit').style.display = 'inline-block'
