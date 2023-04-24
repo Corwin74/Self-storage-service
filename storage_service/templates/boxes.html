@@ -171,7 +171,7 @@
 			};
 			console.log(size_convert[1])
 			function generateBoxElement(floor, name, size, size_name, price) {	
-				return `<a href="#" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
+				return `<a href="{% url 'create_order' box_id=box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 					<div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
 						<span class="SelfStorage_green fs_24 me-2">`+floor+` эт. </span><span class="fs_24">`+name+`</span>
 					</div>
