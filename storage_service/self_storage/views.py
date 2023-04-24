@@ -1,4 +1,5 @@
 import qrcode
+import os
 import stripe
 from dateutil.relativedelta import relativedelta
 
@@ -16,6 +17,7 @@ from .forms import RegisterUser
 
 
 def generate_qr_code(order_data, file_name):
+    os.makedirs('media', exist_ok=True)
     qr_image = qrcode.make(order_data)
     qr_image.save(file_name)
 
