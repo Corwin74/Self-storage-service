@@ -9,7 +9,8 @@ from django.http import HttpResponseNotFound
 from django.urls import reverse
 from random import randint, choice
 
-from .models import Warehouse, Size, Box, Order, Value
+
+from .models import Warehouse, Size, Box, Order
 from .forms import RegisterUser
 
 
@@ -87,14 +88,14 @@ def boxes(request):
 
 def fetch_boxes(request, id):
     meta_response = {}
-    boxes_all = Box.objects.filter(warehouse_id=id).annotate(size_name=Value('size'))
+    boxes_all = Box.objects.select_related('size').filter(warehouse_id=id)
     if boxes_all.count() > 2:
         meta_response['is_all_more_2'] = True
     else:
         meta_response['is_all_more_2'] = False
     boxes_to_3 = boxes_all.filter(size__name__lt=3)
     if boxes_to_3.count() > 2:
-        meta_response['is_to3_more_2'] = True
+        meta_response['is_to_3_more_2'] = True
     else:
         meta_response['is_to_3_more_2'] = False
     boxes_to_10 = boxes_all.filter(size__name__lt=10)
@@ -102,7 +103,7 @@ def fetch_boxes(request, id):
         meta_response['is_to_10_more_2'] = True
     else:
         meta_response['is_to_10_more_2'] = False
-    boxes_from_10 = boxes_all.filter(size__name__lt=10)
+    boxes_from_10 = boxes_all.filter(size__name__gte=10)
     if boxes_from_10.count() > 2:
         meta_response['is_from_10_more_2'] = True
     else:

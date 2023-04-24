@@ -160,13 +160,23 @@
 			{% endfor %}
 		</ul>
 		<script>
-			function generateBoxElement(name, floor, size, size_name, price) {	
+			size_convert = {
+				"1": ["Полка", "0.5"],
+				"2": ["Балкон", "1.5"],
+				"3": ["Кладовка", "3"],
+				"4": ["Комната", "6"],
+				"5": ["Гараж", "9"],
+				"6": ["Чердак", "18"],
+				".": ["Фигня", "150"],
+			};
+			console.log(size_convert[1])
+			function generateBoxElement(floor, name, size, size_name, price) {	
 				return `<a href="#" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 					<div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-						<span class="SelfStorage_green fs_24 me-2">`+floor+`</span><span class="fs_24">`+name+`</span>
+						<span class="SelfStorage_green fs_24 me-2">`+floor+` эт. </span><span class="fs_24">`+name+`</span>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
-						<span class="fs_24">`+size+`</span>
+						<span class="fs_24">`+size+` м³</span>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
 						<span class="fs_24">`+size_name+`</span>
@@ -182,13 +192,204 @@
 					url: "/api/warehouse/"+id+'/',
 					success: function(response) {
 						let parse_response = JSON.parse(response);
-						console.log(parse_response)
-						let boxes_all = JSON.parse(parse_response['boxes_all'])
-						if (parse_response['is_all_more_2'])
-							console.log(boxes_all[1]['fields']['name'])
-							html_block=''
-							html_block += generateBoxElement(boxes_all[1]['fields']['name'], boxes_all[1]['fields']['size'], 'Гараж', boxes_all[1]['fields']['cost'])
-							document.getElementById('all2').innerHTML = html_block
+						let boxes_all = JSON.parse(parse_response['boxes_all']);
+						if (document.getElementById('collapse-all').className == 'collapse show') {
+								document.getElementById('btn-collapse-all').click();
+							};
+						if (parse_response['is_all_more_2']) {
+							document.getElementById('btn-collapse-all').classList.remove('d-none')
+							first_el = boxes_all.shift();
+							html_block='';
+							html_block += generateBoxElement(
+								first_el['fields']['floor'],
+								first_el['fields']['name'],
+								size_convert[first_el['fields']['size']][1],
+								size_convert[first_el['fields']['size']][0],
+								first_el['fields']['cost']
+							);
+							second_el = boxes_all.shift()
+							html_block += generateBoxElement(
+								second_el['fields']['floor'],
+								second_el['fields']['name'],
+								size_convert[second_el['fields']['size']][1],
+								size_convert[second_el['fields']['size']][0],
+								second_el['fields']['cost']
+							);
+							document.getElementById('all2').innerHTML = html_block;
+							html_block='';
+							$.each(boxes_all, function(index, val) { 
+								html_block += generateBoxElement(
+								val['fields']['floor'],
+								val['fields']['name'],
+								size_convert[val['fields']['size']][1],
+								size_convert[val['fields']['size']][0],
+								val['fields']['cost']
+							);
+							});
+							document.getElementById('collapse-all').innerHTML = html_block;
+							}
+						else {
+							html_block='';
+							$.each(boxes_all, function(index, val) { 
+								html_block += generateBoxElement(
+								val['fields']['floor'],
+								val['fields']['name'],
+								size_convert[val['fields']['size']][1],
+								size_convert[val['fields']['size']][0],
+								val['fields']['cost']
+							)});
+							document.getElementById('all2').innerHTML = html_block;
+							document.getElementById('btn-collapse-all').classList.add('d-none')
+						}
+						let boxes_to_3 = JSON.parse(parse_response['boxes_to_3']);
+						if (document.getElementById('collapse-to3').className == 'collapse show') {
+								document.getElementById('btn-collapse-to3').click();
+							};
+						if (parse_response['is_to_3_more_2']) {
+							document.getElementById('btn-collapse-to3').classList.remove('d-none')
+							first_el = boxes_to_3.shift();
+							html_block='';
+							html_block += generateBoxElement(
+								first_el['fields']['floor'],
+								first_el['fields']['name'],
+								size_convert[first_el['fields']['size']][1],
+								size_convert[first_el['fields']['size']][0],
+								first_el['fields']['cost']
+							);
+							second_el = boxes_to_3.shift()
+							html_block += generateBoxElement(
+								second_el['fields']['floor'],
+								second_el['fields']['name'],
+								size_convert[second_el['fields']['size']][1],
+								size_convert[second_el['fields']['size']][0],
+								second_el['fields']['cost']
+							);
+							document.getElementById('to3-2').innerHTML = html_block;
+							html_block='';
+							$.each(boxes_to_3, function(index, val) { 
+								html_block += generateBoxElement(
+								val['fields']['floor'],
+								val['fields']['name'],
+								size_convert[val['fields']['size']][1],
+								size_convert[val['fields']['size']][0],
+								val['fields']['cost']
+							);
+							});
+							document.getElementById('collapse-to3').innerHTML = html_block;
+							}
+						else {
+							html_block='';
+							$.each(boxes_to_3, function(index, val) { 
+								html_block += generateBoxElement(
+								val['fields']['floor'],
+								val['fields']['name'],
+								size_convert[val['fields']['size']][1],
+								size_convert[val['fields']['size']][0],
+								val['fields']['cost']
+							)});
+							document.getElementById('to3-2').innerHTML = html_block;
+							document.getElementById('btn-collapse-to3').classList.add('d-none')
+						}
+						let boxes_to_10 = JSON.parse(parse_response['boxes_to_10']);
+						if (document.getElementById('collapse-to10').className == 'collapse show') {
+								document.getElementById('btn-collapse-to10').click();
+							};
+						if (parse_response['is_to_10_more_2']) {
+							document.getElementById('btn-collapse-to10').classList.remove('d-none')
+							first_el = boxes_to_10.shift();
+							console.log(first_el['fields']['name']);
+							html_block='';
+							html_block += generateBoxElement(
+								first_el['fields']['floor'],
+								first_el['fields']['name'],
+								size_convert[first_el['fields']['size']][1],
+								size_convert[first_el['fields']['size']][0],
+								first_el['fields']['cost']
+							);
+							second_el = boxes_to_10.shift()
+							html_block += generateBoxElement(
+								second_el['fields']['floor'],
+								second_el['fields']['name'],
+								size_convert[second_el['fields']['size']][1],
+								size_convert[second_el['fields']['size']][0],
+								second_el['fields']['cost']
+							);
+							document.getElementById('to10-2').innerHTML = html_block;
+							html_block='';
+							$.each(boxes_to_10, function(index, val) { 
+								html_block += generateBoxElement(
+								val['fields']['floor'],
+								val['fields']['name'],
+								size_convert[val['fields']['size']][1],
+								size_convert[val['fields']['size']][0],
+								val['fields']['cost']
+							);
+							});
+							document.getElementById('collapse-to10').innerHTML = html_block;
+							}
+						else {
+							html_block='';
+							$.each(boxes_to_10, function(index, val) { 
+								html_block += generateBoxElement(
+								val['fields']['floor'],
+								val['fields']['name'],
+								size_convert[val['fields']['size']][1],
+								size_convert[val['fields']['size']][0],
+								val['fields']['cost']
+							)});
+							document.getElementById('to10-2').innerHTML = html_block;
+							document.getElementById('btn-collapse-to10').classList.add('d-none')
+						}
+						let boxes_from_10 = JSON.parse(parse_response['boxes_from_10']);
+						if (document.getElementById('collapse-from10').className == 'collapse show') {
+								document.getElementById('btn-collapse-from10').click();
+							};
+						if (parse_response['is_from_10_more_2']) {
+							document.getElementById('btn-collapse-from10').classList.remove('d-none')
+							first_el = boxes_from_10.shift();
+							console.log(first_el['fields']['name']);
+							html_block='';
+							html_block += generateBoxElement(
+								first_el['fields']['floor'],
+								first_el['fields']['name'],
+								size_convert[first_el['fields']['size']][1],
+								size_convert[first_el['fields']['size']][0],
+								first_el['fields']['cost']
+							);
+							second_el = boxes_from_10.shift()
+							html_block += generateBoxElement(
+								second_el['fields']['floor'],
+								second_el['fields']['name'],
+								size_convert[second_el['fields']['size']][1],
+								size_convert[second_el['fields']['size']][0],
+								second_el['fields']['cost']
+							);
+							document.getElementById('from10-2').innerHTML = html_block;
+							html_block='';
+							$.each(boxes_from_10, function(index, val) { 
+								html_block += generateBoxElement(
+								val['fields']['floor'],
+								val['fields']['name'],
+								size_convert[val['fields']['size']][1],
+								size_convert[val['fields']['size']][0],
+								val['fields']['cost']
+							);
+							});
+							document.getElementById('collapse-from10').innerHTML = html_block;
+							}
+						else {
+							html_block='';
+							$.each(boxes_from_10, function(index, val) { 
+								html_block += generateBoxElement(
+								val['fields']['floor'],
+								val['fields']['name'],
+								size_convert[val['fields']['size']][1],
+								size_convert[val['fields']['size']][0],
+								val['fields']['cost']
+							)});
+							document.getElementById('from10-2').innerHTML = html_block;
+							document.getElementById('btn-collapse-from10').classList.add('d-none')
+						}
 					}
 				});
 			}
@@ -285,15 +486,15 @@
         	</div>
         	<div class="col-6 col-lg-3">
       			<input type="radio" name="BOXES_FILTER" id="to3m" class="SelfStorage_radio d-none">
-       			<label for="to3m" class="btn my-2 w-100 fs_24">До 3 м²</label>
+       			<label for="to3m" class="btn my-2 w-100 fs_24">До 3 м³</label>
         	</div>
         	<div class="col-6 col-lg-3">
       			<input type="radio" name="BOXES_FILTER" id="to10m" class="SelfStorage_radio d-none">
-      			<label for="to10m" class="btn my-2 w-100 fs_24">До 10 м²</label>
+      			<label for="to10m" class="btn my-2 w-100 fs_24">До 10 м³</label>
         	</div>
         	<div class="col-6 col-lg-3">
       			<input type="radio" name="BOXES_FILTER" id="From10m" class="SelfStorage_radio d-none">
-      			<label for="From10m" class="btn my-2 w-100 fs_24">От 10 м²</label>
+      			<label for="From10m" class="btn my-2 w-100 fs_24">От 10 м³</label>
         	</div>
       	</form>
       	
@@ -302,23 +503,23 @@
          		<button class="btn my-2 w-100 fs_24 SelfStorage__tab active" id="pills-all-tab" data-bs-toggle="pill" data-bs-target="#pills-all" type="button" role="tab" aria-controls="pills-all" aria-selected="true">Все боксы</button>
         	</li>
         	<li class="nav-item flex-grow-1 mx-2" role="presentation">
-          		<button class="btn my-2 w-100 fs_24 SelfStorage__tab" id="pills-to3-tab" data-bs-toggle="pill" data-bs-target="#pills-to3" type="button" role="tab" aria-controls="pills-to3" aria-selected="false">До 3 м²</button>
+          		<button class="btn my-2 w-100 fs_24 SelfStorage__tab" id="pills-to3-tab" data-bs-toggle="pill" data-bs-target="#pills-to3" type="button" role="tab" aria-controls="pills-to3" aria-selected="false">До 3 м³</button>
         	</li>
         	<li class="nav-item flex-grow-1 mx-2" role="presentation">
-          		<button class="btn my-2 w-100 fs_24 SelfStorage__tab" id="pills-to10-tab" data-bs-toggle="pill" data-bs-target="#pills-to10" type="button" role="tab" aria-controls="pills-to10" aria-selected="false">До 10 м²</button>
+          		<button class="btn my-2 w-100 fs_24 SelfStorage__tab" id="pills-to10-tab" data-bs-toggle="pill" data-bs-target="#pills-to10" type="button" role="tab" aria-controls="pills-to10" aria-selected="false">До 10 м³</button>
         	</li>
         	<li class="nav-item flex-grow-1 mx-2" role="presentation">
-          		<button class="btn my-2 w-100 fs_24 SelfStorage__tab" id="pills-from10-tab" data-bs-toggle="pill" data-bs-target="#pills-from10" type="button" role="tab" aria-controls="pills-from10" aria-selected="false">От 10 м²</button>
+          		<button class="btn my-2 w-100 fs_24 SelfStorage__tab" id="pills-from10-tab" data-bs-toggle="pill" data-bs-target="#pills-from10" type="button" role="tab" aria-controls="pills-from10" aria-selected="false">От 10 м³</button>
         	</li>
       	</ul>
 
 		<div class="tab-content" id="pills-tabContent">
 			<div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-home-tab">
 					<div id="all2">
-						<h3>Блок All первые два</h3>
+						<h3>Нет свободных боксов</h3>
 					</div>
 				<div class="collapse" id="collapse-all">
-					 <h3>Блок All остальные</h3>
+						<h3>Нет свободных боксов</h3>
 				</div>
 				<div class="d-flex justify-content-center mt-5">
 					<button class="btn w-auto py-3 px-5 SelfStorage__bg_orange SelfStorage__btn2_orange text-white text-center fs_24 border-8" id="btn-collapse-all" data-bs-toggle="collapse" data-bs-target="#collapse-all" aria-expanded="false" aria-controls="collapse-all">Другие боксы</button>
@@ -330,9 +531,11 @@
 
 			<!-- Filters -->
 			<div class="tab-pane fade" id="pills-to3" role="tabpanel" aria-labelledby="pills-profile-tab">
-					<h3>Блок до 3 первые два</h3>
+					<div id="to3-2">
+						<h3>Нет свободных боксов</h3>
+					</div>
 				<div class="collapse" id="collapse-to3">
-					<h3>Блок до 3 остальные</h3>
+					<h3>Нет свободных боксов</h3>
 				</div>
 				<div class="d-flex justify-content-center mt-5">
 					<button class="btn w-auto py-3 px-5 SelfStorage__bg_orange SelfStorage__btn2_orange text-white text-center fs_24 border-8" id="btn-collapse-to3" data-bs-toggle="collapse" data-bs-target="#collapse-to3" aria-expanded="false" aria-controls="collapse-to3">Другие боксы</button>
@@ -343,9 +546,11 @@
 			</div>
 
 			<div class="tab-pane fade" id="pills-to10" role="tabpanel" aria-labelledby="pills-contact-tab">
-					<h3>Блок до 10 первые два</h3>
+					<div id="to10-2">
+						<h3>Нет свободных боксов</h3>
+					</div>
 				<div class="collapse" id="collapse-to10">
-					<h3>Блок до 10 остальные</h3>
+					<h3>Нет свободных боксов</h3>
 				</div>
 				<div class="d-flex justify-content-center mt-5">
 					<button class="btn w-auto py-3 px-5 SelfStorage__bg_orange SelfStorage__btn2_orange text-white text-center fs_24 border-8" id="btn-collapse-to10" data-bs-toggle="collapse" data-bs-target="#collapse-to10" aria-expanded="false" aria-controls="collapse-to10">Другие боксы</button>
@@ -356,9 +561,11 @@
 			</div>
 
 			<div class="tab-pane fade" id="pills-from10" role="tabpanel" aria-labelledby="pills-contact-tab">
-					<h3>От 10 первых два</h3>
+					<div id="from10-2">
+						<h3>Нет свободных боксов</h3>
+					</div>
 				<div class="collapse" id="collapse-from10">
-					<h3>От 10 остальные</h3>
+					<h3>Нет свободных боксов</h3>
 				</div>
 				<div class="d-flex justify-content-center mt-5">
 					<button class="btn w-auto py-3 px-5 SelfStorage__bg_orange SelfStorage__btn2_orange text-white text-center fs_24 border-8" id="btn-collapse-from10" data-bs-toggle="collapse" data-bs-target="#collapse-from10" aria-expanded="false" aria-controls="collapse-from10">Другие боксы</button>
