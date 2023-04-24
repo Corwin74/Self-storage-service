@@ -1,16 +1,19 @@
 import qrcode
 import os
 import stripe
+import json
+from django.core import serializers
 from dateutil.relativedelta import relativedelta
 
 from django.conf import settings
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponseNotFound
 from django.urls import reverse
 from django.core.files.base import File
 from random import randint, choice
+
 
 from .models import Warehouse, Size, Box, Order
 from .forms import RegisterUser
@@ -109,6 +112,36 @@ def boxes(request):
     }
 
     return render(request, template_name='boxes.html', context=context)
+
+
+def fetch_boxes(request, id):
+    meta_response = {}
+    boxes_all = Box.objects.select_related('size').filter(warehouse_id=id)
+    if boxes_all.count() > 2:
+        meta_response['is_all_more_2'] = True
+    else:
+        meta_response['is_all_more_2'] = False
+    boxes_to_3 = boxes_all.filter(size__name__lt=3)
+    if boxes_to_3.count() > 2:
+        meta_response['is_to_3_more_2'] = True
+    else:
+        meta_response['is_to_3_more_2'] = False
+    boxes_to_10 = boxes_all.filter(size__name__lt=10)
+    if boxes_to_10.count() > 2:
+        meta_response['is_to_10_more_2'] = True
+    else:
+        meta_response['is_to_10_more_2'] = False
+    boxes_from_10 = boxes_all.filter(size__name__gte=10)
+    if boxes_from_10.count() > 2:
+        meta_response['is_from_10_more_2'] = True
+    else:
+        meta_response['is_from_10_more_2'] = False
+    meta_response['boxes_all'] = serializers.serialize("json", boxes_all)
+    meta_response['boxes_to_3'] = serializers.serialize("json", boxes_to_3)
+    meta_response['boxes_to_10'] = serializers.serialize("json", boxes_to_10)
+    meta_response['boxes_from_10'] = serializers.serialize("json", boxes_from_10)
+    data = json.dumps(meta_response)
+    return HttpResponse(data)
 
 
 def faq(request):
