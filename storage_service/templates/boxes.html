@@ -169,9 +169,8 @@
 				"6": ["Чердак", "18"],
 				".": ["Фигня", "150"],
 			};
-			console.log(size_convert[1])
-			function generateBoxElement(floor, name, size, size_name, price) {	
-				return `<a href="{% url 'create_order' box_id=box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
+			function generateBoxElement(id, floor, name, size, size_name, price) {	
+				return `<a href="create_order/`+id+`/" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 					<div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
 						<span class="SelfStorage_green fs_24 me-2">`+floor+` эт. </span><span class="fs_24">`+name+`</span>
 					</div>
@@ -201,6 +200,7 @@
 							first_el = boxes_all.shift();
 							html_block='';
 							html_block += generateBoxElement(
+								first_el['pk'],
 								first_el['fields']['floor'],
 								first_el['fields']['name'],
 								size_convert[first_el['fields']['size']][1],
@@ -209,6 +209,7 @@
 							);
 							second_el = boxes_all.shift()
 							html_block += generateBoxElement(
+								first_el['pk'],
 								second_el['fields']['floor'],
 								second_el['fields']['name'],
 								size_convert[second_el['fields']['size']][1],
@@ -219,11 +220,12 @@
 							html_block='';
 							$.each(boxes_all, function(index, val) { 
 								html_block += generateBoxElement(
-								val['fields']['floor'],
-								val['fields']['name'],
-								size_convert[val['fields']['size']][1],
-								size_convert[val['fields']['size']][0],
-								val['fields']['cost']
+									val['pk'],
+									val['fields']['floor'],
+									val['fields']['name'],
+									size_convert[val['fields']['size']][1],
+									size_convert[val['fields']['size']][0],
+									val['fields']['cost']
 							);
 							});
 							document.getElementById('collapse-all').innerHTML = html_block;
@@ -232,11 +234,12 @@
 							html_block='';
 							$.each(boxes_all, function(index, val) { 
 								html_block += generateBoxElement(
-								val['fields']['floor'],
-								val['fields']['name'],
-								size_convert[val['fields']['size']][1],
-								size_convert[val['fields']['size']][0],
-								val['fields']['cost']
+									val['pk'],
+									val['fields']['floor'],
+									val['fields']['name'],
+									size_convert[val['fields']['size']][1],
+									size_convert[val['fields']['size']][0],
+									val['fields']['cost']
 							)});
 							document.getElementById('all2').innerHTML = html_block;
 							document.getElementById('btn-collapse-all').classList.add('d-none')
@@ -250,6 +253,7 @@
 							first_el = boxes_to_3.shift();
 							html_block='';
 							html_block += generateBoxElement(
+								first_el['pk'],
 								first_el['fields']['floor'],
 								first_el['fields']['name'],
 								size_convert[first_el['fields']['size']][1],
@@ -258,6 +262,7 @@
 							);
 							second_el = boxes_to_3.shift()
 							html_block += generateBoxElement(
+								second_el['pk'],
 								second_el['fields']['floor'],
 								second_el['fields']['name'],
 								size_convert[second_el['fields']['size']][1],
@@ -268,11 +273,12 @@
 							html_block='';
 							$.each(boxes_to_3, function(index, val) { 
 								html_block += generateBoxElement(
-								val['fields']['floor'],
-								val['fields']['name'],
-								size_convert[val['fields']['size']][1],
-								size_convert[val['fields']['size']][0],
-								val['fields']['cost']
+									val['pk'],
+									val['fields']['floor'],
+									val['fields']['name'],
+									size_convert[val['fields']['size']][1],
+									size_convert[val['fields']['size']][0],
+									val['fields']['cost']
 							);
 							});
 							document.getElementById('collapse-to3').innerHTML = html_block;
@@ -281,11 +287,12 @@
 							html_block='';
 							$.each(boxes_to_3, function(index, val) { 
 								html_block += generateBoxElement(
-								val['fields']['floor'],
-								val['fields']['name'],
-								size_convert[val['fields']['size']][1],
-								size_convert[val['fields']['size']][0],
-								val['fields']['cost']
+									val['pk'],
+									val['fields']['floor'],
+									val['fields']['name'],
+									size_convert[val['fields']['size']][1],
+									size_convert[val['fields']['size']][0],
+									val['fields']['cost']
 							)});
 							document.getElementById('to3-2').innerHTML = html_block;
 							document.getElementById('btn-collapse-to3').classList.add('d-none')
@@ -297,9 +304,9 @@
 						if (parse_response['is_to_10_more_2']) {
 							document.getElementById('btn-collapse-to10').classList.remove('d-none')
 							first_el = boxes_to_10.shift();
-							console.log(first_el['fields']['name']);
 							html_block='';
 							html_block += generateBoxElement(
+								first_el['pk'],
 								first_el['fields']['floor'],
 								first_el['fields']['name'],
 								size_convert[first_el['fields']['size']][1],
@@ -308,6 +315,7 @@
 							);
 							second_el = boxes_to_10.shift()
 							html_block += generateBoxElement(
+								second_el['pk'],
 								second_el['fields']['floor'],
 								second_el['fields']['name'],
 								size_convert[second_el['fields']['size']][1],
@@ -318,11 +326,12 @@
 							html_block='';
 							$.each(boxes_to_10, function(index, val) { 
 								html_block += generateBoxElement(
-								val['fields']['floor'],
-								val['fields']['name'],
-								size_convert[val['fields']['size']][1],
-								size_convert[val['fields']['size']][0],
-								val['fields']['cost']
+									val['pk'],
+									val['fields']['floor'],
+									val['fields']['name'],
+									size_convert[val['fields']['size']][1],
+									size_convert[val['fields']['size']][0],
+									val['fields']['cost']
 							);
 							});
 							document.getElementById('collapse-to10').innerHTML = html_block;
@@ -331,11 +340,12 @@
 							html_block='';
 							$.each(boxes_to_10, function(index, val) { 
 								html_block += generateBoxElement(
-								val['fields']['floor'],
-								val['fields']['name'],
-								size_convert[val['fields']['size']][1],
-								size_convert[val['fields']['size']][0],
-								val['fields']['cost']
+									val['pk'],
+									val['fields']['floor'],
+									val['fields']['name'],
+									size_convert[val['fields']['size']][1],
+									size_convert[val['fields']['size']][0],
+									val['fields']['cost']
 							)});
 							document.getElementById('to10-2').innerHTML = html_block;
 							document.getElementById('btn-collapse-to10').classList.add('d-none')
@@ -347,9 +357,9 @@
 						if (parse_response['is_from_10_more_2']) {
 							document.getElementById('btn-collapse-from10').classList.remove('d-none')
 							first_el = boxes_from_10.shift();
-							console.log(first_el['fields']['name']);
 							html_block='';
 							html_block += generateBoxElement(
+								first_el['pk'],
 								first_el['fields']['floor'],
 								first_el['fields']['name'],
 								size_convert[first_el['fields']['size']][1],
@@ -358,6 +368,7 @@
 							);
 							second_el = boxes_from_10.shift()
 							html_block += generateBoxElement(
+								second_el['pk'],
 								second_el['fields']['floor'],
 								second_el['fields']['name'],
 								size_convert[second_el['fields']['size']][1],
@@ -368,11 +379,12 @@
 							html_block='';
 							$.each(boxes_from_10, function(index, val) { 
 								html_block += generateBoxElement(
-								val['fields']['floor'],
-								val['fields']['name'],
-								size_convert[val['fields']['size']][1],
-								size_convert[val['fields']['size']][0],
-								val['fields']['cost']
+									val['pk'],
+									val['fields']['floor'],
+									val['fields']['name'],
+									size_convert[val['fields']['size']][1],
+									size_convert[val['fields']['size']][0],
+									val['fields']['cost']
 							);
 							});
 							document.getElementById('collapse-from10').innerHTML = html_block;
@@ -381,11 +393,12 @@
 							html_block='';
 							$.each(boxes_from_10, function(index, val) { 
 								html_block += generateBoxElement(
-								val['fields']['floor'],
-								val['fields']['name'],
-								size_convert[val['fields']['size']][1],
-								size_convert[val['fields']['size']][0],
-								val['fields']['cost']
+									val['pk'],
+									val['fields']['floor'],
+									val['fields']['name'],
+									size_convert[val['fields']['size']][1],
+									size_convert[val['fields']['size']][0],
+									val['fields']['cost']
 							)});
 							document.getElementById('from10-2').innerHTML = html_block;
 							document.getElementById('btn-collapse-from10').classList.add('d-none')
