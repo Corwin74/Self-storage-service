@@ -1,4 +1,5 @@
 import qrcode
+import os
 import stripe
 import json
 from django.core import serializers
@@ -19,6 +20,7 @@ from .forms import RegisterUser
 
 
 def generate_qr_code(order_data, file_name):
+    os.makedirs('media', exist_ok=True)
     qr_image = qrcode.make(order_data)
     qr_image.save(file_name)
 
@@ -184,7 +186,6 @@ def registration_view(request):
 @login_required(login_url='login_page')
 def create_order(request, box_id: int):
     """Создание заказа на аренду."""
-    print(box_id)
     box = get_object_or_404(Box, pk=box_id)
     
     order = Order()
