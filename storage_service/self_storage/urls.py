@@ -19,5 +19,6 @@ urlpatterns = [
          views.successful_payment, name='successful_payment'),
     path('cancelled_payment/<str:payment_id>/',
          views.cancelled_payment, name='cancelled_payment'),
+    path('api/warehouse/<int:id>/', views.fetch_boxes, name='fetch_boxes'),
     ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
